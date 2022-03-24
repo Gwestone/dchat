@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type dataJSON struct {
@@ -16,10 +17,24 @@ func Send(c *gin.Context) {
 
 	//get data from request body
 	var JSONData dataJSON
-	c.BindJSON(&JSONData)
+	err := c.BindJSON(&JSONData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "failed to parse body",
+			"error":   err.Error(),
+		})
+		return
+	}
 
 	//get data from params
-	receiver, _ := strconv.Atoi(c.Param("receiver"))
+	receiver, err := strconv.Atoi(c.Param("receiver"))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "cant parse user id",
+			"error":   err.Error(),
+		})
+		return
+	}
 
 	//get global variables
 	env := utils.GetEnv(c)
@@ -42,19 +57,17 @@ func Send(c *gin.Context) {
 	}
 	sender := int(sender_)
 
-	_, err := env.Db.Exec("INSERT INTO messages (\"from\", \"to\", message, date) VALUES (?, ?, ?, ?)", sender, receiver)
+	//insert data into db
+	_, err = env.Db.Exec("INSERT INTO messages (\"from\", \"to\", message, date) VALUES (?, ?, ?, ?)", sender, receiver, JSONData.Message, time.Now().Unix())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Cant get users",
+			"message": "Failed to insert data",
 			"error":   err.Error(),
 		})
 		return
 	}
 
-	var messageArr []utils.MessageData
-
 	c.JSON(http.StatusOK, gin.H{
-		"message":  "successfully processed",
-		"messages": messageArr,
+		"message": "successfully processed",
 	})
 }

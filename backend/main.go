@@ -2,7 +2,6 @@ package main
 
 import (
 	"dchat/backend/DB"
-	_ "dchat/backend/DB"
 	"dchat/backend/auth"
 	"dchat/backend/routes"
 	"dchat/backend/utils"
@@ -31,7 +30,7 @@ func main() {
 	{
 		messageRoute.POST("/all", auth.LoginRequired, routes.Messages)
 		messageRoute.POST("/:receiver", auth.LoginRequired, routes.Message)
-		//messageRoute.POST("/send/:receiver", auth.LoginRequired, routes.Send)
+		messageRoute.POST("/send/:receiver", auth.LoginRequired, routes.Send)
 	}
 
 	err := router.Run(":81")
