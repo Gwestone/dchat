@@ -9,10 +9,13 @@ import (
 )
 
 func Message(c *gin.Context) {
+	//get data from params
 	receiver, _ := strconv.Atoi(c.Param("receiver"))
 
+	//get global variables
 	env := utils.GetEnv(c)
 
+	//get jwt tokenu data
 	rawClaims, exists := c.Get("tokenData")
 	if !exists {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -31,6 +34,7 @@ func Message(c *gin.Context) {
 	}
 	sender := int(sender_)
 
+	//get datqa from db
 	rows, err := env.Db.Query("SELECT * FROM messages WHERE \"from\" IS ? AND \"to\" IS ?", sender, receiver)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -48,6 +52,7 @@ func Message(c *gin.Context) {
 		messageArr = append(messageArr, *message)
 	}
 
+	//responce
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "successfully processed",
 		"messages": messageArr,

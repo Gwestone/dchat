@@ -1,5 +1,6 @@
 package auth
 
+//local variable for JSON
 type userDataJSON struct {
 	Username string `json:"username"`
 	Password string `json:"password"`

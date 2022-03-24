@@ -9,6 +9,7 @@ import (
 
 func Register(c *gin.Context) {
 
+	//get data from req body
 	var registerData userDataJSON
 	err := c.BindJSON(&registerData)
 	if err != nil {
@@ -19,9 +20,11 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	//get global var
 	env := utils.GetEnv(c)
-	Uuid := uuid.New().String()
 
+	//insert user into db
+	Uuid := uuid.New().String()
 	_, err = env.Db.Exec("INSERT INTO users (UserId, Username, Password) VALUES (?, ?, ?)", Uuid, registerData.Username, registerData.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -31,8 +34,8 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	//get user to create JWT token
 	var user UserSession
-
 	err = env.Db.QueryRow("SELECT * from users WHERE UserId IS ?", Uuid).Scan(&user.Id, &user.UserId, &user.Username, &user.Password)
 
 	token, err := CreateToken(user)
@@ -44,7 +47,8 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
+	//response
+	c.JSON(http.StatusOK, gin.H{
 		"message": "request processed successfully",
 		"token":   token,
 	})

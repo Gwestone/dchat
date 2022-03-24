@@ -39,7 +39,7 @@ func Send(c *gin.Context) {
 	//get global variables
 	env := utils.GetEnv(c)
 
-	//get data from token
+	//get data from JWT token
 	rawClaims, exists := c.Get("tokenData")
 	if !exists {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -67,6 +67,7 @@ func Send(c *gin.Context) {
 		return
 	}
 
+	//responce
 	c.JSON(http.StatusOK, gin.H{
 		"message": "successfully processed",
 	})

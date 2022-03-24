@@ -9,9 +9,10 @@ import (
 )
 
 func Messages(c *gin.Context) {
-	var Password, UserId string
+	//get global variables
 	env := utils.GetEnv(c)
 
+	//get JWT token data
 	rawClaims, exists := c.Get("tokenData")
 	if !exists {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -28,6 +29,7 @@ func Messages(c *gin.Context) {
 		})
 	}
 
+	//get data from db
 	rows, err := env.Db.Query("SELECT * from users WHERE UserId IS NOT ?", userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -37,6 +39,7 @@ func Messages(c *gin.Context) {
 		return
 	}
 
+	var Password, UserId string
 	var userArr []auth.PublicUserData
 	for rows.Next() {
 		user := auth.NewPublicUserData()
@@ -44,6 +47,7 @@ func Messages(c *gin.Context) {
 		userArr = append(userArr, *user)
 	}
 
+	//responce
 	c.JSON(http.StatusOK, gin.H{
 		"message": "successfully processed",
 		"users":   userArr,
