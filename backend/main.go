@@ -16,13 +16,13 @@ import (
 //DONE: add air livereload support
 //DONE: add conf system
 //DONE: upgrade db
-//TODO: add password encryption
-//TODO: upgrade websocket user message gateway
+//DONE: add password encryption
 //TODO: add log system
-//TODO: add migration system
-//TODO: add docker support
 //TODO: security update db(tls)
 //TODO: tests
+//TODO: upgrade websocket user message gateway
+//TODO: add migration system
+//TODO: add docker support
 func main() {
 	router := gin.Default()
 	router.SetTrustedProxies([]string{})

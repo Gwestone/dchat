@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"github.com/Gwestone/dchat/crypto"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -23,10 +24,18 @@ func Login(c *gin.Context) {
 
 	//get data from db
 	var user UserSession
-	err = env.Db.QueryRow("SELECT * from main.users WHERE \"Username\"=$1 AND \"Password\"=$2", loginData.Username, loginData.Password).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
+	err = env.Db.QueryRow("SELECT * from main.users WHERE \"Username\"=$1", loginData.Username).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to find user in db",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	if !crypto.ComparePasswords(user.Password, loginData.Password) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "wrong password or username",
 			"error":   err.Error(),
 		})
 		return
