@@ -33,7 +33,7 @@ func Login(c *gin.Context) {
 	}
 
 	//create jwt token and send it to client
-	token, err := GenToken(user)
+	token, err := GenToken(user, env.Config.JWTSecret)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to generate",

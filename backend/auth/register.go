@@ -38,9 +38,9 @@ func Register(c *gin.Context) {
 
 	//get user to create JWT token
 	var user UserSession
-	err = env.Db.QueryRow("SELECT * from main.users WHERE \"UserId\" IS $1", Uuid).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
+	err = env.Db.QueryRow("SELECT * from main.users WHERE \"UserId\" == $1", Uuid).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 
-	token, err := GenToken(user)
+	token, err := GenToken(user, env.Config.JWTSecret)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to generate",

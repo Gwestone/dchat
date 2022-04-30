@@ -5,3 +5,5 @@ Port: 10000
 #redis
 RedisAddr: localhost:6379
 RedisPassword: 55aa
+#JWT
+JWTSecret: B4qicI8CP8oDGTjwUdwbCpfFZO7k2PQQKdHVdEvYjQJeYIDB

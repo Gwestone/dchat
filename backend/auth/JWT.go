@@ -5,9 +5,7 @@ import (
 	"time"
 )
 
-const Secret = "123SUPERSECRET123"
-
-func GenToken(user UserSession) (string, error) {
+func GenToken(user UserSession, Secret string) (string, error) {
 
 	atClaims := jwt.MapClaims{
 		"UserId":   user.UserId,

@@ -13,15 +13,15 @@ import (
 	"strconv"
 )
 
-//TODO: upgrade session management system to localCached(redis)
-//TODO: upgrade websocket user message gateway
+//DONE: add air livereload support
+//DONE: add conf system
 //DONE: upgrade db
+//TODO: add password encryption
+//TODO: upgrade websocket user message gateway
 //TODO: add log system
 //TODO: add migration system
 //TODO: add docker support
-//DONE: add air livereload support
-//DONE: add conf system
-//TODO: security update db
+//TODO: security update db(tls)
 //TODO: tests
 func main() {
 	router := gin.Default()
