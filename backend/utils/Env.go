@@ -2,11 +2,13 @@ package utils
 
 import (
 	"database/sql"
+	"dchat/backend/config"
 	"github.com/gin-gonic/gin"
 )
 
 type Env struct {
-	Db *sql.DB
+	Db     *sql.DB
+	Config *config.Config
 }
 
 func NewEnv() *Env {

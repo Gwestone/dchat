@@ -30,7 +30,7 @@ func Messages(c *gin.Context) {
 	}
 
 	//get data from db
-	rows, err := env.Db.Query("SELECT * from users WHERE UserId IS NOT ?", userId)
+	rows, err := env.Db.Query("SELECT * from main.users WHERE \"UserId\" != $1", userId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Canrt get users",
@@ -43,7 +43,7 @@ func Messages(c *gin.Context) {
 	var userArr []auth.PublicUserData
 	for rows.Next() {
 		user := auth.NewPublicUserData()
-		rows.Scan(&user.Id, &UserId, &user.Username, &Password)
+		rows.Scan(&user.Id, &user.Username, &Password, &UserId)
 		userArr = append(userArr, *user)
 	}
 

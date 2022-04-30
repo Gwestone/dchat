@@ -23,7 +23,7 @@ func Login(c *gin.Context) {
 
 	//get data from db
 	var user UserSession
-	err = env.Db.QueryRow("SELECT * from users WHERE Username=? AND Password=?", loginData.Username, loginData.Password).Scan(&user.Id, &user.UserId, &user.Username, &user.Password)
+	err = env.Db.QueryRow("SELECT * from main.users WHERE \"Username\"=$1 AND \"Password\"=$2", loginData.Username, loginData.Password).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to find user in db",

@@ -2,10 +2,10 @@ package routes
 
 import (
 	"dchat/backend/utils"
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 	"time"
 )
 
@@ -27,7 +27,7 @@ func Send(c *gin.Context) {
 	}
 
 	//get data from params
-	receiver, err := strconv.Atoi(c.Param("receiver"))
+	receiver := c.Param("receiver")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "cant parse user id",
@@ -48,17 +48,13 @@ func Send(c *gin.Context) {
 		return
 	}
 	claims := rawClaims.(jwt.MapClaims)
-	sender_, ok := claims["Id"].(float64)
-	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "cant parse id from token",
-		})
-		return
-	}
-	sender := int(sender_)
+	sender := claims["Username"].(string)
+
+	fmt.Printf(receiver + "\n")
+	fmt.Printf(sender)
 
 	//insert data into db
-	_, err = env.Db.Exec("INSERT INTO messages (\"from\", \"to\", message, date) VALUES (?, ?, ?, ?)", sender, receiver, JSONData.Message, time.Now().Unix())
+	_, err = env.Db.Exec("INSERT INTO main.messages (\"From\", \"To\", \"Message\", \"Date\") VALUES ($1, $2, $3, $4)", sender, receiver, JSONData.Message, time.Now().Unix())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to insert data",

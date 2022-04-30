@@ -2,6 +2,7 @@ package auth
 
 import (
 	"dchat/backend/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
@@ -25,8 +26,9 @@ func Register(c *gin.Context) {
 
 	//insert user into db
 	Uuid := uuid.New().String()
-	_, err = env.Db.Exec("INSERT INTO users (UserId, Username, Password) VALUES (?, ?, ?)", Uuid, registerData.Username, registerData.Password)
+	_, err = env.Db.Exec("INSERT INTO main.users (\"Username\", \"Password\", \"UserId\") VALUES ($1, $2, $3)", registerData.Username, registerData.Password, Uuid)
 	if err != nil {
+		fmt.Printf(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "username already used",
 			"error":   err.Error(),
@@ -36,7 +38,7 @@ func Register(c *gin.Context) {
 
 	//get user to create JWT token
 	var user UserSession
-	err = env.Db.QueryRow("SELECT * from users WHERE UserId IS ?", Uuid).Scan(&user.Id, &user.UserId, &user.Username, &user.Password)
+	err = env.Db.QueryRow("SELECT * from main.users WHERE \"UserId\" IS $1", Uuid).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 
 	token, err := CreateToken(user)
 	if err != nil {

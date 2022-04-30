@@ -1,0 +1,2 @@
+DbAddr: postgres://postgres:55aa@127.0.0.1:5433/dchat?sslmode=disable
+Port: 10000

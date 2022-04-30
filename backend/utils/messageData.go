@@ -1,10 +1,10 @@
 package utils
 
 type MessageData struct {
-	Message string `json:"message"`
-	From    int    `json:"from"`
-	To      int    `json:"to"`
-	Date    int    `json:"date"`
+	Message string `json:"Message"`
+	From    string `json:"From"`
+	To      string `json:"To"`
+	Date    int    `json:"Date"`
 }
 
 func NewMessageData() *MessageData {

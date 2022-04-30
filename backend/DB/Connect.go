@@ -2,16 +2,18 @@ package DB
 
 import (
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
-func ConnectDB() *sql.DB {
+//_ "github.com/mattn/go-sqlite3"
 
-	//db, err := sql.Open("postgres", "postgresql://dchat:726nk6WwJf3J6hFuSymq3nexwgHdYPSA@localhost:5432/dchat")
-	db, err := sql.Open("sqlite3", "./dchat.db")
+func ConnectDB(dbUrl string) (*sql.DB, error) {
+
+	db, err := sql.Open("postgres", dbUrl)
+	//db, err := sql.Open("sqlite3", "./dchat.db")
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
-	return db
+	return db, nil
 
 }

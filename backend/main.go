@@ -3,19 +3,41 @@ package main
 import (
 	"dchat/backend/DB"
 	"dchat/backend/auth"
+	"dchat/backend/config"
 	"dchat/backend/routes"
 	"dchat/backend/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
-//TODO: upgrade session management system to localCached
+//TODO: upgrade session management system to localCached(redis)
+//TODO: upgrade user message gateway
+//DONE: upgrade db
+//TODO: add log system
+//TODO: add migration system
+//TODO: add docker support
+//TODO: add air support
+//DONE: add conf system
 func main() {
 	router := gin.Default()
 	router.SetTrustedProxies([]string{})
 
-	db := DB.ConnectDB()
+	appConf, err := config.Parse("./config.yml")
+	if err != nil {
+		fmt.Printf("Failed to parse appConf!: %s", err.Error())
+		return
+	}
+
+	db, err := DB.ConnectDB(appConf.DbAddr)
+	if err != nil {
+		fmt.Printf("Failed to connect db: %s", err.Error())
+		return
+	}
+
 	env := utils.NewEnv()
 	env.Db = db
+	env.Config = appConf
 
 	//DB.MigrateUsers(db)
 
@@ -33,7 +55,12 @@ func main() {
 		messageRoute.POST("/send/:receiver", auth.LoginRequired, routes.Send)
 	}
 
-	err := router.Run(":81")
+	//cryptRoute := router.Group("/crypt")
+	//{
+	//	cryptRoute.GET("/pubKey", crypto.GetPubKey)
+	//}
+
+	err = router.Run(":" + strconv.Itoa(appConf.Port))
 	if err != nil {
 		return
 	} // listen and serve on 0.0.0.0:81

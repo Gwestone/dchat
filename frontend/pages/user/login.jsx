@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {Nav, Button, Navbar, Container, NavDropdown, Form, InputGroup} from 'react-bootstrap';
 import Link from 'next/link'
-import "bootstrap/dist/css/bootstrap.min.css"
 import DNavbar from "../../components/DNavbar";
 import Error from "../../components/Error";
 
