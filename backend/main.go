@@ -19,7 +19,7 @@ import (
 //TODO: add log system
 //TODO: add migration system
 //TODO: add docker support
-//TODO: add air support
+//DONE: add air livereload support
 //DONE: add conf system
 //TODO: security update db
 //TODO: tests
