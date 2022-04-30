@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"dchat/backend/utils"
 	"fmt"
+	"github.com/Gwestone/dchat/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"

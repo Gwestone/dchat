@@ -1,24 +1,28 @@
 package main
 
 import (
-	"dchat/backend/DB"
-	"dchat/backend/auth"
-	"dchat/backend/config"
-	"dchat/backend/routes"
-	"dchat/backend/utils"
+	"context"
 	"fmt"
+	"github.com/Gwestone/dchat/DB"
+	"github.com/Gwestone/dchat/auth"
+	"github.com/Gwestone/dchat/config"
+	"github.com/Gwestone/dchat/routes"
+	"github.com/Gwestone/dchat/session"
+	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
 
 //TODO: upgrade session management system to localCached(redis)
-//TODO: upgrade user message gateway
+//TODO: upgrade websocket user message gateway
 //DONE: upgrade db
 //TODO: add log system
 //TODO: add migration system
 //TODO: add docker support
 //TODO: add air support
 //DONE: add conf system
+//TODO: security update db
+//TODO: tests
 func main() {
 	router := gin.Default()
 	router.SetTrustedProxies([]string{})
@@ -35,13 +39,19 @@ func main() {
 		return
 	}
 
+	rdb := session.Connect(appConf.RedisAddr, appConf.RedisPassword)
+	ctx := context.Background()
+
 	env := utils.NewEnv()
+	cache := session.NewStorageContext(rdb, ctx)
+
 	env.Db = db
 	env.Config = appConf
+	env.SessionCtx = cache
 
 	//DB.MigrateUsers(db)
-
 	router.Use(env.SetEnv)
+
 	authRoute := router.Group("/auth")
 	{
 		authRoute.POST("/login", auth.Login)
@@ -54,11 +64,6 @@ func main() {
 		messageRoute.POST("/:receiver", auth.LoginRequired, routes.Message)
 		messageRoute.POST("/send/:receiver", auth.LoginRequired, routes.Send)
 	}
-
-	//cryptRoute := router.Group("/crypt")
-	//{
-	//	cryptRoute.GET("/pubKey", crypto.GetPubKey)
-	//}
 
 	err = router.Run(":" + strconv.Itoa(appConf.Port))
 	if err != nil {

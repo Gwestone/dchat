@@ -6,8 +6,10 @@ import (
 )
 
 type Config struct {
-	DbAddr string `yaml:"DbAddr"`
-	Port   int    `yaml:"Port"`
+	DbAddr        string `yaml:"DbAddr"`
+	Port          int    `yaml:"Port"`
+	RedisAddr     string `yaml:"RedisAddr"`
+	RedisPassword string `yaml:"RedisPassword"`
 }
 
 func newConfig() *Config {

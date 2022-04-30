@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"dchat/backend/utils"
 	"fmt"
+	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
@@ -40,7 +40,7 @@ func Register(c *gin.Context) {
 	var user UserSession
 	err = env.Db.QueryRow("SELECT * from main.users WHERE \"UserId\" IS $1", Uuid).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 
-	token, err := CreateToken(user)
+	token, err := GenToken(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to generate",

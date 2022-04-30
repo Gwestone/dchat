@@ -1,20 +1,17 @@
-package JWT
+package auth
 
 import (
-	"github.com/Gwestone/dchat/auth"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )
 
 const Secret = "123SUPERSECRET123"
 
-func GenToken(user auth.UserSession) (string, error) {
+func GenToken(user UserSession) (string, error) {
 
 	atClaims := jwt.MapClaims{
-		"Id":       user.Id,
 		"UserId":   user.UserId,
 		"Username": user.Username,
-		"Password": user.Password,
 		"exp":      time.Now().Add(time.Minute * 30).Unix(),
 	}
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)

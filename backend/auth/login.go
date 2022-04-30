@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"dchat/backend/utils"
+	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -33,7 +33,7 @@ func Login(c *gin.Context) {
 	}
 
 	//create jwt token and send it to client
-	token, err := CreateToken(user)
+	token, err := GenToken(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to generate",
