@@ -17,9 +17,10 @@ import (
 //DONE: add conf system
 //DONE: upgrade db
 //DONE: add password encryption
-//TODO: add log system
 //TODO: security update db(tls)
 //TODO: tests
+//TODO: comment and document code
+//optional
 //TODO: upgrade websocket user message gateway
 //TODO: add migration system
 //TODO: add docker support
