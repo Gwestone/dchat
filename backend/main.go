@@ -17,7 +17,7 @@ import (
 //DONE: add conf system
 //DONE: upgrade db
 //DONE: add password encryption
-//TODO: security update db(tls)
+//DONE: security update (tls)
 //TODO: tests
 //TODO: comment and document code
 //optional
@@ -66,8 +66,15 @@ func main() {
 		messageRoute.POST("/send/:receiver", auth.LoginRequired, routes.Send)
 	}
 
-	err = router.Run(":" + strconv.Itoa(appConf.Port))
-	if err != nil {
-		return
-	} // listen and serve on 0.0.0.0:81
+	if env.Config.UseSSL {
+		err = router.RunTLS(":"+strconv.Itoa(appConf.Port), "./SSLCert/https/server.crt", "./SSLCert/https/server.key")
+		if err != nil {
+			return
+		} // listen and serve on 0.0.0.0:81
+	} else {
+		err = router.Run(":" + strconv.Itoa(appConf.Port))
+		if err != nil {
+			return
+		} // listen and serve on 0.0.0.0:81
+	}
 }
