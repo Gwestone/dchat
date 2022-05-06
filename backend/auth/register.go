@@ -2,7 +2,7 @@ package auth
 
 import (
 	"fmt"
-	"github.com/Gwestone/dchat/crypto"
+	"github.com/Gwestone/dchat/cryptoMod"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -26,7 +26,7 @@ func Register(c *gin.Context) {
 	env := utils.GetEnv(c)
 
 	//insert user into db
-	hashedPassword := crypto.HashPassword(registerData.Password)
+	hashedPassword := cryptoMod.HashPassword(registerData.Password)
 	Uuid := uuid.New().String()
 
 	_, err = env.Db.Exec("INSERT INTO main.users (\"Username\", \"Password\", \"UserId\") VALUES ($1, $2, $3)", registerData.Username, hashedPassword, Uuid)

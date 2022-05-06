@@ -14,19 +14,18 @@ type Config struct {
 	UseSSL        bool   `yaml:"UseSSL"`
 }
 
-func newConfig() *Config {
+func NewConfig() *Config {
 	return &Config{}
 }
 
 func Parse(filename string) (*Config, error) {
 
 	yamlBytes, err := os.ReadFile(filename)
-	//fmt.Printf(string(yamlBytes))
 	if err != nil {
 		return nil, err
 	}
 
-	config := newConfig()
+	config := NewConfig()
 	err = yaml.Unmarshal(yamlBytes, config)
 	if err != nil {
 		return nil, err

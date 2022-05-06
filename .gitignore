@@ -44,5 +44,7 @@ package-lock.json
 /postgres-data/
 backend/tmp
 
-backend/SSL/psql/*
-backend/SSL/https/*
+*.pem
+*.crt
+*.key
+*.csr

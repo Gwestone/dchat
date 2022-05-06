@@ -1,0 +1,11 @@
+#postgres
+DbAddr: postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable
+#server
+Port: 80
+#redis
+RedisAddr: localhost:6379
+RedisPassword: 55aa
+#JWT
+JWTSecret: B4qicI8CP8oDGTjwUdwbCpfFZO7k2PQQKdHVdEvYjQJeYIDB
+#https
+UseSSL: false

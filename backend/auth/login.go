@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"github.com/Gwestone/dchat/crypto"
+	"github.com/Gwestone/dchat/cryptoMod"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -33,7 +33,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if !crypto.ComparePasswords(user.Password, loginData.Password) {
+	if !cryptoMod.ComparePasswords(user.Password, loginData.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "wrong password or username",
 			"error":   err.Error(),

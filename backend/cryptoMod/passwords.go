@@ -1,4 +1,4 @@
-package crypto
+package cryptoMod
 
 import (
 	"golang.org/x/crypto/bcrypt"

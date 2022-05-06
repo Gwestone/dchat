@@ -10,6 +10,7 @@ import (
 	"github.com/Gwestone/dchat/session"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
+	"os"
 	"strconv"
 )
 
@@ -25,16 +26,28 @@ import (
 //TODO: add migration system
 //TODO: add docker support
 func main() {
+
+	inFlags := os.Args[1:]
+
 	router := gin.Default()
 	router.SetTrustedProxies([]string{})
 
-	appConf, err := config.Parse("./config.yml")
+	//debug config if debug
+	var appConf *config.Config
+	var err error
+	if utils.IfHasFlag(inFlags, "--Prod") || utils.IfHasFlag(inFlags, "--Production") {
+		appConf, err = config.Parse("./configProd.yml")
+	} else {
+		appConf, err = config.Parse("./configDebug.yml")
+	}
+
 	if err != nil {
 		fmt.Printf("Failed to parse appConf!: %s", err.Error())
 		return
 	}
 
 	db, err := DB.ConnectDB(appConf.DbAddr)
+	//DB.MigrateUsers(db)
 	if err != nil {
 		fmt.Printf("Failed to connect db: %s", err.Error())
 		return
