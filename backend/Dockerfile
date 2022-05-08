@@ -9,7 +9,7 @@ COPY . ./
 
 RUN go build -o backend
 
-EXPOSE 80
+EXPOSE 8080
 
 RUN chmod +x ./backend
 CMD ["./backend", "--Prod"]

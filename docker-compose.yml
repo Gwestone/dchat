@@ -1,14 +1,14 @@
 services:
-#  frontend:
-#    build: ./frontend
-#    ports:
-#      - "3000:3000"
-#    container_name: frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    container_name: frontend
 
   backend:
     build: ./backend
     ports:
-      - "80:80"
+      - "8080:8080"
     container_name: backend
     depends_on:
       - postgres
