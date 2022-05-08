@@ -1,7 +1,7 @@
 #postgres
 DbAddr: postgres://postgres:55aa@127.0.0.1:5433/dchat?sslmode=disable
 #server
-Port: 10000
+Port: 8080
 #redis
 RedisAddr: localhost:6379
 RedisPassword: 55aa

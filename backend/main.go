@@ -24,7 +24,7 @@ import (
 //optional
 //TODO: upgrade websocket user message gateway
 //TODO: add migration system
-//TODO: add docker support
+//DONE: add docker support
 func main() {
 
 	inFlags := os.Args[1:]
@@ -65,6 +65,7 @@ func main() {
 
 	//DB.MigrateUsers(db)
 	router.Use(env.SetEnv)
+	router.Use(utils.SetCORS())
 
 	authRoute := router.Group("/auth")
 	{
