@@ -26,13 +26,19 @@ func Login(c *gin.Context) {
 	var user UserSession
 	err = env.Db.QueryRow("SELECT * from main.users WHERE \"Username\"=$1", loginData.Username).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "unable to find user in db",
 			"error":   err.Error(),
 		})
 		return
 	}
 
+	if !EmptyValidate(user) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "wrong password or username",
+		})
+		return
+	}
 	if !cryptoMod.ComparePasswords(user.Password, loginData.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "wrong password or username",

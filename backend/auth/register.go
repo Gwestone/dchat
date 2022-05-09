@@ -43,6 +43,13 @@ func Register(c *gin.Context) {
 	var user UserSession
 	err = env.Db.QueryRow("SELECT * from main.users WHERE \"UserId\" == $1", Uuid).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 
+	if !EmptyValidate(user) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "cant create user",
+			"error":   err.Error(),
+		})
+		return
+	}
 	token, err := GenToken(user, env.Config.JWTSecret)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

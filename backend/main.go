@@ -19,11 +19,11 @@ import (
 //DONE: upgrade db
 //DONE: add password encryption
 //DONE: security update (tls)
+//TODO: db migration
 //TODO: tests
 //TODO: comment and document code
 //optional
 //TODO: upgrade websocket user message gateway
-//TODO: add migration system
 //DONE: add docker support
 func main() {
 

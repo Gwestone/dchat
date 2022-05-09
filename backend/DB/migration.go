@@ -8,12 +8,12 @@ import (
 
 func MigrateUsers(db *sql.DB) {
 
-	b, err := ioutil.ReadFile("../SQL/dchat_localhost-2022_05_06_21_14_56-dump.sql") // just pass the file name
+	rawSql, err := ioutil.ReadFile("./End_migrate.sql") // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
 
-	queryStr := string(b) // convert content to a 'string'
+	queryStr := string(rawSql) // convert content to a 'string'
 	fmt.Print(queryStr)
 	_, err = db.Exec(queryStr)
 	if err != nil {
