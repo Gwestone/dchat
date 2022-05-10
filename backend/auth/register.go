@@ -5,6 +5,7 @@ import (
 	"github.com/Gwestone/dchat/cryptoMod"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"net/http"
 )
@@ -17,7 +18,15 @@ func Register(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "cant parse json",
-			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = validator.New().Struct(registerData)
+	//TODO specify what is wrong
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid input data provided",
 		})
 		return
 	}
@@ -34,7 +43,6 @@ func Register(c *gin.Context) {
 		fmt.Printf(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "username already used",
-			"error":   err.Error(),
 		})
 		return
 	}
@@ -46,7 +54,6 @@ func Register(c *gin.Context) {
 	if !EmptyValidate(user) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "cant create user",
-			"error":   err.Error(),
 		})
 		return
 	}
@@ -54,7 +61,6 @@ func Register(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "unable to generate",
-			"error":   err.Error(),
 		})
 		return
 	}

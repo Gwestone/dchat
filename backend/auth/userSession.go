@@ -1,10 +1,10 @@
 package auth
 
 type UserSession struct {
-	Id       int    `json:"Id"`
-	UserId   string `json:"UserId"`
-	Username string `json:"Username"`
-	Password string `json:"Password"`
+	Id       int    `json:"Id" validate:"required"`
+	UserId   string `json:"UserId" validate:"required"`
+	Username string `json:"Username" validate:"required"`
+	Password string `json:"Password" validate:"required"`
 }
 
 func NewUserSession(Id int, UserId string, Username string, Password string) *UserSession {

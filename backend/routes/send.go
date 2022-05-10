@@ -21,7 +21,6 @@ func Send(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to parse body",
-			"error":   err.Error(),
 		})
 		return
 	}
@@ -31,7 +30,6 @@ func Send(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "cant parse user id",
-			"error":   err.Error(),
 		})
 		return
 	}
@@ -58,7 +56,6 @@ func Send(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to insert data",
-			"error":   err.Error(),
 		})
 		return
 	}

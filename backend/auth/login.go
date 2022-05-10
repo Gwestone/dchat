@@ -4,6 +4,7 @@ import (
 	"github.com/Gwestone/dchat/cryptoMod"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 )
 
@@ -14,7 +15,15 @@ func Login(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"message": "Invalid json provided",
-			"error":   err.Error(),
+		})
+		return
+	}
+
+	err = validator.New().Struct(loginData)
+	//TODO specify what is wrong
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid input data provided",
 		})
 		return
 	}
@@ -28,21 +37,21 @@ func Login(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "unable to find user in db",
-			"error":   err.Error(),
 		})
 		return
 	}
 
-	if !EmptyValidate(user) {
+	err = validator.New().Struct(user)
+	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "wrong password or username",
 		})
 		return
 	}
+
 	if !cryptoMod.ComparePasswords(user.Password, loginData.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "wrong password or username",
-			"error":   err.Error(),
 		})
 		return
 	}
@@ -50,9 +59,8 @@ func Login(c *gin.Context) {
 	//create jwt token and send it to client
 	token, err := GenToken(user, env.Config.JWTSecret)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "unable to generate",
-			"error":   err.Error(),
 		})
 		return
 	}

@@ -35,7 +35,6 @@ func Message(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Cant get users",
-			"error":   err.Error(),
 		})
 		return
 	}
