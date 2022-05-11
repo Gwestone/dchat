@@ -22,6 +22,7 @@ import (
 //TODO: db migration
 //TODO: tests
 //TODO: comment and document code
+//TODO: JWT validation
 //optional
 //TODO: upgrade websocket user message gateway
 //DONE: add docker support

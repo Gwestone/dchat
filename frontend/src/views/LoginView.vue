@@ -46,6 +46,7 @@ export default {
   methods: {
 
     register(e) {
+
       e.preventDefault()
       //console.log(this.username, this.password)
       axios.post("http://localhost:8080/auth/login",
@@ -54,7 +55,12 @@ export default {
             password: this.password
           }).then(res => {
             if (res.status === 200){
+
               localStorage.setItem("JWTToken", res.data.token)
+              this.$forceUpdate()
+              this.$emit("login")
+              this.$router.push("/")
+
             }else {
               this.errorMessage = res.data.message
               this.displayError()

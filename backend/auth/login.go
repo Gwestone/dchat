@@ -13,14 +13,13 @@ func Login(c *gin.Context) {
 	var loginData userDataJSON
 	err := c.BindJSON(&loginData)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid json provided",
 		})
 		return
 	}
 
 	err = validator.New().Struct(loginData)
-	//TODO specify what is wrong
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid input data provided",

@@ -8,6 +8,7 @@ import (
 func GenToken(user UserSession, Secret string) (string, error) {
 
 	atClaims := jwt.MapClaims{
+		"Id":       user.Id,
 		"UserId":   user.UserId,
 		"Username": user.Username,
 		"exp":      time.Now().Add(time.Minute * 30).Unix(),

@@ -19,12 +19,18 @@
         <ErrorAlertComponent v-if="showError" :err-message="errorMessage" @close="closeError" class="error"/>
       </transition>
     </div>
+    <div class="errorSpace">
+      <transition name="slide-fade">
+        <ErrorAlertComponent v-if="showError" :err-message="errorMessage" @close="closeError" class="error"/>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import ErrorAlertComponent from "@/components/ErrorAlertComponent";
+import validator from "validator";
 
 export default {
   components:{
@@ -39,7 +45,18 @@ export default {
     }
   },
   methods:{
-    register(e){
+
+    validate(){
+      if (!validator.isStrongPassword(this.password)){
+        console.log("not strong password")
+        this.errorMessage = "password not strong"
+        this.displayError()
+      }
+    },
+
+    register(e) {
+
+      this.validate()
       e.preventDefault()
       //console.log(this.username, this.password)
       axios.post("http://localhost:8080/auth/register",
@@ -48,7 +65,12 @@ export default {
             password: this.password
           }).then(res => {
         if (res.status === 200){
+
           localStorage.setItem("JWTToken", res.data.token)
+          this.$forceUpdate()
+          this.$emit("register")
+          this.$router.push("/")
+
         }else {
           this.errorMessage = res.data.message
           this.displayError()

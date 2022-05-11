@@ -23,7 +23,6 @@ func Register(c *gin.Context) {
 	}
 
 	err = validator.New().Struct(registerData)
-	//TODO specify what is wrong
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid input data provided",
@@ -41,7 +40,7 @@ func Register(c *gin.Context) {
 	_, err = env.Db.Exec("INSERT INTO main.users (\"Username\", \"Password\", \"UserId\") VALUES ($1, $2, $3)", registerData.Username, hashedPassword, Uuid)
 	if err != nil {
 		fmt.Printf(err.Error())
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "username already used",
 		})
 		return
@@ -51,12 +50,14 @@ func Register(c *gin.Context) {
 	var user UserSession
 	err = env.Db.QueryRow("SELECT * from main.users WHERE \"UserId\" == $1", Uuid).Scan(&user.Id, &user.Username, &user.Password, &user.UserId)
 
-	if !EmptyValidate(user) {
+	err = validator.New().Struct(user)
+	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "cant create user",
 		})
 		return
 	}
+
 	token, err := GenToken(user, env.Config.JWTSecret)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

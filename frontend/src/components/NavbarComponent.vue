@@ -1,19 +1,43 @@
 <template>
   <ul>
     <li><router-link to="/">Home</router-link></li>
-    <li><router-link to="search">Search</router-link></li>
-    <li style="float:right">
+    <li v-if="isLogged"><router-link to="users">Users</router-link></li>
+    <li v-if="isLogged"><router-link to="search">Search</router-link></li>
+    <li style="float:right" v-if="!isLogged">
       <router-link to="login">Login</router-link>
     </li>
-    <li style="float:right">
-      <router-link to="register">Register</router-link>
+    <li style="float:right" v-if="!isLogged">
+      <router-link  to="register">Register</router-link>
     </li>
   </ul>
 </template>
 
 <script>
 export default {
-  name: "NavbarComponent"
+  name: "NavbarComponent",
+  data(){
+    return{
+      token: localStorage.getItem("JWTToken"),
+      isLogged: !!localStorage.getItem("JWTToken")
+    }
+  },
+
+  mounted() {
+    this.token = localStorage.getItem("JWTToken")
+    this.isLogged = !!this.token
+  },
+
+  methods:{
+    update(){
+      console.log("update")
+      this.token = localStorage.getItem("JWTToken")
+      this.isLogged = !!this.token
+    },
+    loadToken(){
+      this.dataArr = localStorage.getItem("JWTToken")
+    },
+
+  }
 }
 </script>
 

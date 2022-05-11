@@ -40,6 +40,7 @@ func Messages(c *gin.Context) {
 
 	var Password, UserId string
 	var userArr []auth.PublicUserData
+
 	for rows.Next() {
 		user := auth.NewPublicUserData()
 		rows.Scan(&user.Id, &user.Username, &Password, &UserId)

@@ -3,6 +3,7 @@ import HomeView from "@/views/HomeView";
 import SearchView from "@/views/SearchView";
 import LoginView from "@/views/LoginView";
 import RegisterView from "@/views/RegisterView";
+import UsersView from "@/views/UsersView";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/register",
     name: "register",
     component: RegisterView,
+  },
+  {
+    path: "/users",
+    name: "users",
+    component: UsersView,
   },
 ];
 
