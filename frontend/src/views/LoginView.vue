@@ -35,6 +35,7 @@ export default {
   components:{
     ErrorAlertComponent
   },
+  emits:["login"],
   data(){
     return{
       username: '',
@@ -66,7 +67,7 @@ export default {
               this.displayError()
             }
       }).catch(err => {
-        if (err.response ){
+        if (err.response){
           this.errorMessage = err.response.data.message
           console.log(err.response.data.error)
           this.displayError()

@@ -31,17 +31,25 @@ func LoginRequired(c *gin.Context) {
 	rawToken := strings.Split(c.GetHeader("Authorization"), " ")[1]
 	token, err := jwt.Parse(rawToken, keyFunc)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": "failed to parse jwt(token may be corrupted or session has expired)"})
+		c.AbortWithStatusJSON(http.StatusUnauthorized,
+			gin.H{
+				"message": "failed to parse jwt(token may be corrupted or session has expired)",
+			})
+	}
+
+	if !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Cant parse token calims",
+		})
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !(ok && token.Valid) {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Cant parse token calims",
 		})
 		return
 	}
-
 	c.Set("tokenData", claims)
 	c.Next()
 }

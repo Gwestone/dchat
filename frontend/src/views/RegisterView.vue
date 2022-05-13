@@ -36,6 +36,7 @@ export default {
   components:{
     ErrorAlertComponent,
   },
+  emits:["register"],
   data(){
     return{
       username: '',

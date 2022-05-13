@@ -1,15 +1,29 @@
 <template>
   <ul>
     <li><router-link to="/">Home</router-link></li>
-    <li v-if="isLogged"><router-link to="users">Users</router-link></li>
-    <li v-if="isLogged"><router-link to="search">Search</router-link></li>
+
+    <li v-if="isLogged">
+      <router-link to="users">Users</router-link>
+    </li>
+
+    <li v-if="isLogged">
+      <router-link to="search">Search</router-link>
+    </li>
+
     <li style="float:right" v-if="!isLogged">
       <router-link to="login">Login</router-link>
     </li>
+
     <li style="float:right" v-if="!isLogged">
       <router-link  to="register">Register</router-link>
     </li>
+
+    <li style="float:right" v-if="isLogged">
+      <a @click="logOut" style="cursor: pointer;">LogOut</a>
+    </li>
+
   </ul>
+  <router-view class="routerView" v-on:login="onLogin" v-on:register="onRegister"/>
 </template>
 
 <script>
@@ -28,14 +42,20 @@ export default {
   },
 
   methods:{
-    update(){
-      console.log("update")
+    logOut(){
+      localStorage.removeItem("JWTToken")
+      this.isLogged = false
+    },
+
+    onLogin(){
       this.token = localStorage.getItem("JWTToken")
       this.isLogged = !!this.token
     },
-    loadToken(){
-      this.dataArr = localStorage.getItem("JWTToken")
-    },
+
+    onRegister(){
+      this.token = localStorage.getItem("JWTToken")
+      this.isLogged = !!this.token
+    }
 
   }
 }
@@ -48,6 +68,10 @@ ul {
   padding: 5px;
   overflow: hidden;
   background-color: #333;
+}
+
+.routerView{
+  height: calc(100% - 57px);
 }
 
 li {
