@@ -37,7 +37,7 @@ func LoginRequired(c *gin.Context) {
 			})
 	}
 
-	if !token.Valid {
+	if token == nil || !token.Valid || token.Claims == nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Cant parse token calims",
 		})

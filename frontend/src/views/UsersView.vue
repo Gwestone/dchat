@@ -1,19 +1,21 @@
 <template>
   <div class="container">
     <div class="list">
+
       <div class="left">
-        <div class="elem" v-for="(item, i) in data" :key="item.id">
-          <ListItemComponent :item="item" :key="i" @selected="onSelect"/>
+        <div class="elem" v-for="(item, i) in data" :key="i">
+          <ListItemComponent :item="item" @selected="onSelect"/>
         </div>
       </div>
-      <div class="errorSpace">
-        <transition name="slide-fade">
-          <ErrorAlertComponent v-if="showError" :err-message="errorMessage" @close="closeError" class="error"/>
-        </transition>
-      </div>
+
     </div>
     <div class="dialog">
-      <DialogComponent :to="currentCompanion"/>
+      <DialogComponent :current-username="currentUsername" :messages="messages"/>
+    </div>
+    <div class="errorSpace">
+      <transition name="slide-fade">
+        <ErrorAlertComponent v-if="showError" :err-message="errorMessage" @close="closeError" class="error"/>
+      </transition>
     </div>
   </div>
 </template>
@@ -23,6 +25,7 @@ import axios from "axios";
 import ListItemComponent from "@/components/ListItemComponent";
 import ErrorAlertComponent from "@/components/ErrorAlertComponent";
 import DialogComponent from "@/components/DialogComponent";
+import jwtDecode from "jwt-decode";
 
 export default {
   components:{
@@ -33,16 +36,30 @@ export default {
   name: "UsersView",
   data(){
     return{
-      token: '',
+      token: localStorage.getItem("JWTToken"),
       data: [],
       showError: false,
       errorMessage: '',
-      currentCompanion: ''
+      currentUsername: '',
+      selectedUsername: '',
+      messages:[
+        {
+          from: "user",
+          message: "hello world",
+          date: 1652535907
+        },
+        {
+          from: "default companion",
+          message: "hello",
+          date: 1652535909
+        }
+      ],
     }
   },
 
   created(){
     this.token = localStorage.getItem("JWTToken")
+    this.currentUsername = jwtDecode(this.token).Username
     this.loadUsers()
   },
 
@@ -54,7 +71,7 @@ export default {
     },
 
     onSelect(username){
-      this.currentCompanion = username
+      this.selectedUsername = username
     },
 
     loadUsers() {
@@ -113,7 +130,7 @@ export default {
   overflow:hidden; overflow-y:scroll;
 }
 .dialog{
-  position: relative;
+  float: right;
   width: 100%;
   height: 800px;
 }

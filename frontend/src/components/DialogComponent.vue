@@ -1,6 +1,6 @@
 <template>
-  <div v-if="to" class="dialog__component">
-    <DisplayMessagesComponent />
+  <div class="dialog__component">
+    <DisplayMessagesComponent class="message__display" :messages="messages" :current-username="currentUsername"/>
     <InputMessagesComponent class="message__input"/>
   </div>
 </template>
@@ -13,7 +13,8 @@ export default {
   components: {InputMessagesComponent, DisplayMessagesComponent},
 
   props: {
-    to: String
+    currentUsername: String,
+    messages: Array
   }
 }
 </script>
@@ -21,12 +22,16 @@ export default {
 <style scoped>
 .message__input{
   height: 100px;
-  width: 100%;
+  width: 90%;
   position: relative;
+}
+.message__display{
+  height: calc(100% - 100px);
 }
 .dialog__component{
   bottom: 0;
   left: 0;
+  height: 100%;
   position: relative;
 }
 </style>
