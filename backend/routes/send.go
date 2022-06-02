@@ -5,12 +5,13 @@ import (
 	"github.com/Gwestone/dchat/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	"time"
 )
 
 type dataJSON struct {
-	Message string `json:"message"`
+	Message string `json:"text" validate:"required,min=1,max=1000"`
 }
 
 func Send(c *gin.Context) {
@@ -21,6 +22,15 @@ func Send(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to parse body",
+		})
+		return
+	}
+
+	//validate data
+	err = validator.New().Struct(JSONData)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid input data provided",
 		})
 		return
 	}
@@ -52,7 +62,7 @@ func Send(c *gin.Context) {
 	fmt.Printf(sender)
 
 	//insert data into db
-	_, err = env.Db.Exec("INSERT INTO main.messages (\"From\", \"To\", \"Message\", \"Date\") VALUES ($1, $2, $3, $4)", sender, receiver, JSONData.Message, time.Now().Unix())
+	_, err = env.Db.Exec("INSERT INTO main.messages (\"From\", \"To\", \"Text\", \"Date\") VALUES ($1, $2, $3, $4)", sender, receiver, JSONData.Message, time.Now().Unix())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to insert data",

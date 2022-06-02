@@ -52,6 +52,9 @@ export default {
         console.log("not strong password")
         this.errorMessage = "password not strong"
         this.displayError()
+        return false
+      }else{
+        return true
       }
     },
 

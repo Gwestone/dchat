@@ -6,6 +6,6 @@ Port: 8080
 RedisAddr: localhost:6379
 RedisPassword: 55aa
 #JWT
-JWTSecret: B4qicI8CP8oDGTjwUdwbCpfFZO7k2PQQKdHVdEvYjQJeYIDB
+JWTSecret: WgyCXpzAOJkkQUWjztqiwBWOYstBDJSfKmzQiQkEqpPePKTmyhosQlAqVZAaaoDsSSlVBUNB
 #https
 UseSSL: false

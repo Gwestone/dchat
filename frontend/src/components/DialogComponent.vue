@@ -1,7 +1,7 @@
 <template>
   <div class="dialog__component">
-    <DisplayMessagesComponent class="message__display" :messages="messages" :current-username="currentUsername"/>
-    <InputMessagesComponent class="message__input"/>
+    <DisplayMessagesComponent class="message__display" :messages="messages" :current-username="currentUser" :redraw="redraw"/>
+    <InputMessagesComponent class="message__input" :selected-user="selectedUser" v-on:message-sent="send"/>
   </div>
 </template>
 
@@ -11,10 +11,20 @@ import DisplayMessagesComponent from "@/components/DisplayMessagesComponent";
 export default {
   name: "DialogComponent",
   components: {InputMessagesComponent, DisplayMessagesComponent},
-
   props: {
-    currentUsername: String,
-    messages: Array
+    currentUser: String,
+    messages: Array,
+    selectedUser: String
+  },
+  data(){
+    return{
+      redraw: false
+    }
+  },
+  methods:{
+    send(){
+      this.redraw = !this.redraw
+    }
   }
 }
 </script>

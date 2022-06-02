@@ -11,7 +11,7 @@ create table dchat.main.messages
         constraint messages_users_username_fk_
             references dchat.main.users ("Username")
             on update cascade on delete cascade,
-    "Messages" text not null,
+    "Text" text not null,
     "Date"     int  not null
 );
 

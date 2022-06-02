@@ -31,7 +31,7 @@ func Message(c *gin.Context) {
 
 	fmt.Printf(sender + "\n" + receiver)
 
-	rows, err := env.Db.Query("SELECT * FROM main.messages WHERE \"From\" = $2 AND \"To\" = $1", sender, receiver)
+	rows, err := env.Db.Query("SELECT * FROM main.messages WHERE (\"From\" = $2 AND \"To\" = $1) OR (\"From\" = $1 AND \"To\" = $2)", sender, receiver)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Cant get users",

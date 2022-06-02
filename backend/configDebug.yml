@@ -1,11 +1,11 @@
 #postgres
-DbAddr: postgres://postgres:55aa@127.0.0.1:5433/dchat?sslmode=disable
+DbAddr: postgres://postgres:55aa@127.0.0.1:5432/dchat
 #server
 Port: 8080
 #redis
 RedisAddr: localhost:6379
 RedisPassword: 55aa
 #JWT
-JWTSecret: B4qicI8CP8oDGTjwUdwbCpfFZO7k2PQQKdHVdEvYjQJeYIDB
+JWTSecret: WgyCXpzAOJkkQUWjztqiwBWOYstBDJSfKmzQiQkEqpPePKTmyhosQlAqVZAaaoDsSSlVBUNB
 #https
 UseSSL: false

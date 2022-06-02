@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    {{ message.from }} : {{message.message}} | {{new Date(message.date).getHours()}}:{{new Date(message.date).getMinutes()}}
+    {{ message.From }} : {{message.Text}} | {{new Date(message.Date).getHours()}}:{{new Date(message.Date).getMinutes()}}
   </div>
 </template>
 

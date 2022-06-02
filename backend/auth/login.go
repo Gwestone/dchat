@@ -9,6 +9,7 @@ import (
 )
 
 func Login(c *gin.Context) {
+	
 	//get data from req body
 	var loginData userDataJSON
 	err := c.BindJSON(&loginData)
@@ -19,6 +20,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	//validate data
 	err = validator.New().Struct(loginData)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

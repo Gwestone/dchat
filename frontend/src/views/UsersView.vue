@@ -10,7 +10,7 @@
 
     </div>
     <div class="dialog">
-      <DialogComponent :current-username="currentUsername" :messages="messages"/>
+      <DialogComponent :current-username="currentUsername" :messages="messages" :selected-user="selectedUsername"/>
     </div>
     <div class="errorSpace">
       <transition name="slide-fade">
@@ -42,18 +42,19 @@ export default {
       errorMessage: '',
       currentUsername: '',
       selectedUsername: '',
-      messages:[
-        {
-          from: "user",
-          message: "hello world",
-          date: 1652535907
-        },
-        {
-          from: "default companion",
-          message: "hello",
-          date: 1652535909
-        }
-      ],
+      messages:[]
+      // messages:[
+      //   {
+      //     from: "user1",
+      //     message: "hello world",
+      //     date: 1652535907
+      //   },
+      //   {
+      //     from: "default companion",
+      //     message: "hello",
+      //     date: 1652535909
+      //   }
+      // ],
     }
   },
 
@@ -71,15 +72,46 @@ export default {
     },
 
     onSelect(username){
+      console.log(`selected ${username}`)
       this.selectedUsername = username
+      this.loadMessages()
+    },
+
+    loadMessages(){
+
+      if (!this.selectedUsername){
+        return null
+      }
+
+      console.log("messages request")
+      axios.post("http://localhost:8080/messages/" + this.selectedUsername,
+          {},
+          {
+            headers: {
+              'Authorization': `Bearer ${this.token}`
+            }
+          }
+      ).then(res => {
+        if (res.status === 200){
+
+          this.messages = res.data.messages
+
+        }else {
+          this.errorMessage = res.data.message
+          this.displayError()
+        }
+      }).catch(err => {
+        if (err.response){
+          this.errorMessage = "failed to fetch data"
+          console.log(err.response.data.error)
+          this.displayError()
+        }
+      })
     },
 
     loadUsers() {
       axios.post("http://localhost:8080/messages/all",
-          {
-            username: this.username,
-            password: this.password
-          },
+          {},
           {
             headers: {
               'Authorization': `Bearer ${this.token}`
@@ -88,14 +120,12 @@ export default {
       ).then(res => {
         if (res.status === 200){
           this.data = res.data.users
-
         }else {
           this.errorMessage = res.data.message
           this.displayError()
-
         }
       }).catch(err => {
-        if (err.response ){
+        if (err.response){
           this.errorMessage = "failed to fetch data"
           console.log(err.response.data.error)
           this.displayError()

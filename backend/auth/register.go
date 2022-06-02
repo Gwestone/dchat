@@ -22,6 +22,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	//validate input data
 	err = validator.New().Struct(registerData)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
