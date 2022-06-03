@@ -3,6 +3,7 @@ DbAddr: postgres://postgres:55aa@127.0.0.1:5432/dchat
 #server
 Port: 8080
 #redis
+UseRedis: false
 RedisAddr: localhost:6379
 RedisPassword: 55aa
 #JWT

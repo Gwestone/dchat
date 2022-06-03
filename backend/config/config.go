@@ -12,6 +12,7 @@ type Config struct {
 	RedisPassword string `yaml:"RedisPassword"`
 	JWTSecret     string `yaml:"JWTSecret"`
 	UseSSL        bool   `yaml:"UseSSL"`
+	UseRedis      bool   `yaml:"UseRedis"`
 }
 
 func NewConfig() *Config {

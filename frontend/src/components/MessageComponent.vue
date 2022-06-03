@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    {{ message.From }} : {{message.Text}} | {{new Date(message.Date).getHours()}}:{{new Date(message.Date).getMinutes()}}
+    {{ message.From }} : {{message.MessageText}} <div class="date">{{new Date(message.Date * 1000).getHours()}}:{{new Date(message.Date * 1000).getMinutes()}} </div>
   </div>
 </template>
 
@@ -32,5 +32,8 @@ export default {
   left: 0;
   top: 0;
   background: #f3ffff;
+}
+.date{
+  color: #888888;
 }
 </style>

@@ -1,4 +1,4 @@
-create table dchat.main.users
+create table main.users
 (
     "Id"       serial
         constraint users_pk
@@ -9,13 +9,13 @@ create table dchat.main.users
 );
 
 create unique index users_id_uindex
-    on dchat.main.users ("Id");
+    on main.users ("Id");
 
 create unique index users_password_uindex
-    on dchat.main.users ("Password");
+    on main.users ("Password");
 
 create unique index users_userid_uindex
-    on dchat.main.users ("UserId");
+    on main.users ("UserId");
 
 create unique index users_username_uindex
-    on dchat.main.users ("Username");
+    on main.users ("Username");

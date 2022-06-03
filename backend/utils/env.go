@@ -10,7 +10,7 @@ import (
 type Env struct {
 	Db         *sql.DB
 	Config     *config.Config
-	SessionCtx *session.StorageContext
+	SessionCtx *session.CacheContext
 }
 
 func NewEnv() *Env {

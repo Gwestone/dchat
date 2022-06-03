@@ -12,4 +12,4 @@ RUN go build -o backend
 EXPOSE 8080
 
 RUN chmod +x ./backend
-CMD ["./backend", "--Prod"]
+ENTRYPOINT [ "./backend", "--Prod" ]

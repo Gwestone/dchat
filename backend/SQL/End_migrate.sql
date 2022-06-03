@@ -1,29 +1,9 @@
 --1_create_dchat
 CREATE DATABASE dchat;
 --2_create_schema_main
-create schema dchat.main;
+create schema main;
 --3_create_messages_table
-create table dchat.main.messages
-(
-    "Id"       serial
-        constraint messages_pk
-            primary key,
-    "From"     text not null
-        constraint messages_users_username_fk
-            references dchat.main.users ("Username")
-            on update cascade on delete cascade,
-    "To"       text not null
-        constraint messages_users_username_fk_
-            references dchat.main.users ("Username")
-            on update cascade on delete cascade,
-    "Messages" text not null,
-    "Date"     int  not null
-);
-
-create unique index messages_id_uindex
-    on dchat.main.messages ("Id");
---4_create_users_table
-create table dchat.main.users
+create table main.users
 (
     "Id"       serial
         constraint users_pk
@@ -34,13 +14,35 @@ create table dchat.main.users
 );
 
 create unique index users_id_uindex
-    on dchat.main.users ("Id");
+    on main.users ("Id");
 
 create unique index users_password_uindex
-    on dchat.main.users ("Password");
+    on main.users ("Password");
 
 create unique index users_userid_uindex
-    on dchat.main.users ("UserId");
+    on main.users ("UserId");
 
 create unique index users_username_uindex
-    on dchat.main.users ("Username");
+    on main.users ("Username");
+
+--4_create_users_table
+create table main.messages
+(
+    "Id"       serial
+        constraint messages_pk
+            primary key,
+    "From"     text not null
+        constraint messages_users_username_fk
+            references main.users ("Username")
+            on update cascade on delete cascade,
+    "To"       text not null
+        constraint messages_users_username_fk_
+            references main.users ("Username")
+            on update cascade on delete cascade,
+    "MessageText" text not null,
+    "Date"     int  not null
+);
+
+create unique index messages_id_uindex
+    on main.messages ("Id");
+

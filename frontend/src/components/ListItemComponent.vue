@@ -1,6 +1,6 @@
 <template>
-  <div class="card" @click="$emit('selected', item.username)">
-      {{ item.username }}
+  <div class="card" @click="$emit('selected', item.Username)">
+      {{ item.Username }}
   </div>
 </template>
 

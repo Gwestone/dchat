@@ -5,13 +5,13 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-type StorageContext struct {
+type CacheContext struct {
 	Rdb *redis.Client
 	ctx context.Context
 }
 
-func NewStorageContext(Rdb *redis.Client, ctx context.Context) *StorageContext {
-	return &StorageContext{
+func NewCacheContext(Rdb *redis.Client, ctx context.Context) *CacheContext {
+	return &CacheContext{
 		Rdb: Rdb,
 		ctx: ctx,
 	}

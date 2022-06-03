@@ -27,7 +27,7 @@ func Message(c *gin.Context) {
 	claims := rawClaims.(jwt.MapClaims)
 	sender := claims["Username"].(string)
 
-	//get datqa from db
+	//get data from db
 
 	fmt.Printf(sender + "\n" + receiver)
 
@@ -43,7 +43,7 @@ func Message(c *gin.Context) {
 	for rows.Next() {
 		var Id int
 		message := utils.NewMessageData()
-		rows.Scan(&Id, &message.From, &message.To, &message.Message, &message.Date)
+		rows.Scan(&Id, &message.From, &message.To, &message.MessageText, &message.Date)
 		messageArr = append(messageArr, *message)
 	}
 

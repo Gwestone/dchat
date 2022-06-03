@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -11,7 +10,7 @@ import (
 )
 
 type dataJSON struct {
-	Message string `json:"text" validate:"required,min=1,max=1000"`
+	MessageText string `json:"MessageText" validate:"required,min=1,max=1000"`
 }
 
 func Send(c *gin.Context) {
@@ -58,11 +57,11 @@ func Send(c *gin.Context) {
 	claims := rawClaims.(jwt.MapClaims)
 	sender := claims["Username"].(string)
 
-	fmt.Printf(receiver + "\n")
-	fmt.Printf(sender)
+	//fmt.Printf(receiver + "\n")
+	//fmt.Printf(sender)
 
 	//insert data into db
-	_, err = env.Db.Exec("INSERT INTO main.messages (\"From\", \"To\", \"Text\", \"Date\") VALUES ($1, $2, $3, $4)", sender, receiver, JSONData.Message, time.Now().Unix())
+	_, err = env.Db.Exec("INSERT INTO main.messages (\"From\", \"To\", \"MessageText\", \"Date\") VALUES ($1, $2, $3, $4)", sender, receiver, JSONData.MessageText, time.Now().Unix())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Failed to insert data",

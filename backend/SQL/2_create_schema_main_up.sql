@@ -1,1 +1,1 @@
-create schema dchat.main;
+create schema main;

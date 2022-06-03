@@ -29,7 +29,7 @@ export default {
       console.log(`send to ${this.selectedUser} message: ${this.message}`)
       axios.post('http://localhost:8080/messages/send/' + this.selectedUser,
           {
-            'text': this.message
+            'MessageText': this.message
           },
           {
             headers: {

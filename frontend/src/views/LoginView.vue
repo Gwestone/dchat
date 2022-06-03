@@ -52,8 +52,8 @@ export default {
       //console.log(this.username, this.password)
       axios.post("http://localhost:8080/auth/login",
           {
-            username: this.username,
-            password: this.password
+            Username: this.username,
+            Password: this.password
           }).then(res => {
             if (res.status === 200){
 

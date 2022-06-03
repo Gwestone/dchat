@@ -10,7 +10,7 @@
 
     </div>
     <div class="dialog">
-      <DialogComponent :current-username="currentUsername" :messages="messages" :selected-user="selectedUsername"/>
+      <DialogComponent :current-username="currentUsername" :messages="messages" :selected-user="selectedUsername" @sent="sent"/>
     </div>
     <div class="errorSpace">
       <transition name="slide-fade">
@@ -65,6 +65,10 @@ export default {
   },
 
   methods:{
+
+    sent(){
+      this.loadMessages()
+    },
 
     closeError(){
       this.showError=false

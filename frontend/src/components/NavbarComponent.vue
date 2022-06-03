@@ -45,6 +45,7 @@ export default {
     logOut(){
       localStorage.removeItem("JWTToken")
       this.isLogged = false
+      this.$router.push({name: "home"})
     },
 
     onLogin(){

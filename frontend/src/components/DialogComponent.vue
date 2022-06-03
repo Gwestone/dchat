@@ -1,7 +1,7 @@
 <template>
   <div class="dialog__component">
     <DisplayMessagesComponent class="message__display" :messages="messages" :current-username="currentUser" :redraw="redraw"/>
-    <InputMessagesComponent class="message__input" :selected-user="selectedUser" v-on:message-sent="send"/>
+    <InputMessagesComponent class="message__input" :selected-user="selectedUser" @message-sent="send"/>
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
   methods:{
     send(){
       this.redraw = !this.redraw
+      this.$emit("sent")
     }
   }
 }

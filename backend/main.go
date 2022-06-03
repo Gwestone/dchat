@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/Gwestone/dchat/Color"
 	"github.com/Gwestone/dchat/DB"
 	"github.com/Gwestone/dchat/auth"
 	"github.com/Gwestone/dchat/config"
@@ -30,18 +31,20 @@ func main() {
 
 	inFlags := os.Args[1:]
 
-	router := gin.Default()
-	router.SetTrustedProxies([]string{})
-
 	//debug config if debug
 	var appConf *config.Config
 	var err error
+
 	if utils.IfHasFlag(inFlags, "--Prod") || utils.IfHasFlag(inFlags, "--Production") {
 		appConf, err = config.Parse("./configProd.yml")
+		gin.SetMode(gin.ReleaseMode)
 	} else {
 		appConf, err = config.Parse("./configDebug.yml")
+		gin.SetMode(gin.DebugMode)
 	}
 
+	router := gin.Default()
+	router.SetTrustedProxies([]string{})
 	if err != nil {
 		fmt.Printf("Failed to parse appConf!: %s", err.Error())
 		return
@@ -54,15 +57,27 @@ func main() {
 		return
 	}
 
-	rdb := session.Connect(appConf.RedisAddr, appConf.RedisPassword)
-	ctx := context.Background()
-
 	env := utils.NewEnv()
-	cache := session.NewStorageContext(rdb, ctx)
+
+	if appConf.UseRedis {
+		fmt.Println("Trying to launch redis service...")
+		rdb := session.Connect(appConf.RedisAddr, appConf.RedisPassword)
+		ctx := context.Background()
+		cache := session.NewCacheContext(rdb, ctx)
+		env.SessionCtx = cache
+		if rdb.Ping(ctx).Val() == "PONG" {
+			fmt.Println("Redis is", Color.Green, "online", Color.Reset)
+		} else {
+			fmt.Println("Failed to setup redis on addr :", appConf.RedisAddr)
+			return
+		}
+		fmt.Println("Redis is", Color.Green, "online", Color.Reset)
+	} else {
+		fmt.Println("Redis is", Color.Red, "offline", Color.Reset, "this can cause instability in work or decreased performance")
+	}
 
 	env.Db = db
 	env.Config = appConf
-	env.SessionCtx = cache
 
 	//DB.MigrateUsers(db)
 	router.Use(env.SetEnv)
