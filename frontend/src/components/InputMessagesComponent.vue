@@ -58,16 +58,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.message__input{
-  padding: 1px;
-  float: left;
-  width: 90%;
-  margin-left: 20px;
-  font-size:22px;
-}
-.send__button{
-  float: left;
-  padding: 5px;
-}
-</style>
+<style scoped src="@/assets/css/inputMessageComponent.css" />

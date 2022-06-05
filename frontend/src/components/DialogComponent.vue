@@ -30,19 +30,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.message__input{
-  height: 100px;
-  width: 90%;
-  position: relative;
-}
-.message__display{
-  height: calc(100% - 100px);
-}
-.dialog__component{
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  position: relative;
-}
-</style>
+<style scoped src="@/assets/css/dialogComponent.css" />

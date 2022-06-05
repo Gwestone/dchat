@@ -22,15 +22,4 @@ export default {
 }
 </script>
 
-<style scoped>
-  .card{
-    font-size: 17px;
-    padding: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-    margin: 0;
-    background: #f3ffff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-</style>
+<style scoped src="@/assets/css/listItemComponent.css" />

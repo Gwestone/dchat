@@ -22,18 +22,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.message{
-  font-size: 17px;
-  padding: 15px;
-  margin: 0;
-  display: inline-block;
-  position: relative;
-  left: 0;
-  top: 0;
-  background: #f3ffff;
-}
-.date{
-  color: #888888;
-}
-</style>
+<style scoped src="@/assets/css/messageComponent.css" />
