@@ -28,9 +28,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import ErrorAlertComponent from "@/components/ErrorAlertComponent";
-import validator from "validator";
+import register from "@/api/register";
+import ErrorAlertComponent from "@/components/utils/ErrorAlertComponent";
 
 export default {
   components:{
@@ -47,46 +46,25 @@ export default {
   },
   methods:{
 
-    validate(){
+    /*validate(){
       if (!validator.isStrongPassword(this.password)){
         console.log("not strong password")
-        this.errorMessage = "password not strong"
-        this.displayError()
+        // this.errorMessage = "password not strong"
+        // this.displayError()
         return false
       }else{
         return true
       }
-    },
+    },*/
 
     register(e) {
 
-      this.validate()
+      //this.validate()
       e.preventDefault()
       //console.log(this.username, this.password)
-      axios.post("http://localhost:8080/auth/register",
-          {
-            Username: this.username,
-            Password: this.password
-          }).then(res => {
-        if (res.status === 200){
+      register(this.username, this.password, localStorage, this)
+    },
 
-          localStorage.setItem("JWTToken", res.data.token)
-          this.$forceUpdate()
-          this.$emit("register")
-          this.$router.push("/")
-
-        }else {
-          this.errorMessage = res.data.message
-          this.displayError()
-        }
-      }).catch(err => {
-        if (err.response ){
-          this.errorMessage = err.response.data.message
-          console.log(err.response.data.error)
-          this.displayError()
-        }
-      })
-      },
     closeError(){
       this.showError=false
       this.errorMessage = ''

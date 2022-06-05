@@ -9,7 +9,7 @@
         <form>
           <input type="text" id="login" class="second" name="login" placeholder="login" v-model="username">
           <input type="text" id="password" class="third" name="login" placeholder="password" v-model="password">
-          <input type="submit" class="fourth" value="Log In" @click="register">
+          <input type="submit" class="fourth" value="Log In" @click="login">
         </form>
 
         <!-- Remind Passowrd -->
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import ErrorAlertComponent from "@/components/ErrorAlertComponent";
+import ErrorAlertComponent from "@/components/utils/ErrorAlertComponent";
+import login from "@/api/login";
 
 export default {
   components:{
@@ -46,33 +46,11 @@ export default {
   },
   methods: {
 
-    register(e) {
+    login(e) {
 
       e.preventDefault()
       //console.log(this.username, this.password)
-      axios.post("http://localhost:8080/auth/login",
-          {
-            Username: this.username,
-            Password: this.password
-          }).then(res => {
-            if (res.status === 200){
-
-              localStorage.setItem("JWTToken", res.data.token)
-              this.$forceUpdate()
-              this.$emit("login")
-              this.$router.push("/")
-
-            }else {
-              this.errorMessage = res.data.message
-              this.displayError()
-            }
-      }).catch(err => {
-        if (err.response){
-          this.errorMessage = err.response.data.message
-          console.log(err.response.data.error)
-          this.displayError()
-        }
-      })
+      login(this.username, this.password, localStorage, this)
 
     },
 

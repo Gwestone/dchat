@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -29,7 +28,7 @@ func Message(c *gin.Context) {
 
 	//get data from db
 
-	fmt.Printf(sender + "\n" + receiver)
+	//fmt.Printf(sender + "\n" + receiver)
 
 	rows, err := env.Db.Query("SELECT * FROM main.messages WHERE (\"From\" = $2 AND \"To\" = $1) OR (\"From\" = $1 AND \"To\" = $2)", sender, receiver)
 	if err != nil {

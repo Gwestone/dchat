@@ -14,7 +14,7 @@ func MigrateUsers(db *sql.DB) {
 	}
 
 	queryStr := string(rawSql) // convert content to a 'string'
-	fmt.Print(queryStr)
+	//fmt.Print(queryStr)
 	_, err = db.Exec(queryStr)
 	if err != nil {
 		fmt.Print("failed to migrate db: " + err.Error())
