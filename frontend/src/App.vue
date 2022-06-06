@@ -1,11 +1,11 @@
 <template>
-  <NavbarComponent class="Navbar"/>
+  <MainComponent/>
 </template>
 
 <script>
-import NavbarComponent from "@/components/NavbarComponent";
+import MainComponent from "@/MainComponent";
 export default {
-  components: {NavbarComponent}
+  components: {MainComponent}
 }
 </script>
 

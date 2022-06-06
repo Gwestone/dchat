@@ -19,7 +19,7 @@ export default {
   },
   methods:{
     messageOffset(message){
-      if(message.from === this.currentUsername){
+      if(message.From === this.currentUsername){
         return "left"
       }else {
         return "right"

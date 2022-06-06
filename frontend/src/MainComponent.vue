@@ -19,26 +19,31 @@
     </li>
 
     <li style="float:right" v-if="isLogged">
-      <a @click="logOut" style="cursor: pointer;">LogOut</a>
+      <a @click="logOut">LogOut</a>
+    </li>
+    <li style="float:right" v-if="isLogged">
+      <div>{{ username   }}</div>
     </li>
 
   </ul>
-  <router-view class="routerView" v-on:login="onLogin" v-on:register="onRegister"/>
+  <router-view class="routerView" v-on:login="updateToken" v-on:register="updateToken"/>
 </template>
 
 <script>
+import jwtDecode from "jwt-decode";
+
 export default {
-  name: "NavbarComponent",
+  name: "MainComponent",
   data(){
     return{
       token: localStorage.getItem("JWTToken"),
-      isLogged: !!localStorage.getItem("JWTToken")
+      isLogged: !!localStorage.getItem("JWTToken"),
+      username: ''
     }
   },
 
   mounted() {
-    this.token = localStorage.getItem("JWTToken")
-    this.isLogged = !!this.token
+    this.loadUser()
   },
 
   methods:{
@@ -48,18 +53,23 @@ export default {
       this.$router.push({name: "home"})
     },
 
-    onLogin(){
+    updateToken(){
       this.token = localStorage.getItem("JWTToken")
       this.isLogged = !!this.token
+      this.loadUser()
     },
 
-    onRegister(){
-      this.token = localStorage.getItem("JWTToken")
-      this.isLogged = !!this.token
-    }
+    loadUser(){
+      try {
+        this.username = jwtDecode(localStorage.getItem("JWTToken")).Username
+      }  catch (e){
+        this.username = ''
+        console.log(e)
+      }
+    },
 
   }
 }
 </script>
 
-<style scoped src="@/assets/css/navbarComponent.css" />
+<style scoped src="@/assets/css/mainComponent.css" />

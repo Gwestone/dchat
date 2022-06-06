@@ -1,4 +1,4 @@
-package Color
+package color
 
 const Reset string = "\033[0m"
 

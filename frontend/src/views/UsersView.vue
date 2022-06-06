@@ -2,15 +2,11 @@
   <div class="container">
 
     <div class="list">
-      <div class="left">
-        <div class="elem" v-for="(item, i) in data" :key="i">
-          <ListItemComponent :item="item" @selected="onSelect"/>
-        </div>
-      </div>
+      <UsersListComponent :users="data" @selected="onSelect"/>
     </div>
 
     <div class="dialog">
-      <DialogComponent :current-username="currentUsername" :messages="messages" :selected-user="selectedUsername" @sent="sent"/>
+      <DialogComponent :current-user="currentUser" :messages="messages" :selected-user="selectedUsername" @sent="sent"/>
     </div>
 
     <div class="errorSpace">
@@ -23,17 +19,17 @@
 </template>
 
 <script>
-import ListItemComponent from "@/components/ListItemComponent";
 import ErrorAlertComponent from "@/components/utils/ErrorAlertComponent";
 import DialogComponent from "@/components/DialogComponent";
 import jwtDecode from "jwt-decode";
 import fetchUsers from "@/api/fetchUsers";
 import fetchMessages from "@/api/fetchMessages";
+import UsersListComponent from "@/components/UsersListComponent";
 
 export default {
   components:{
+    UsersListComponent,
     DialogComponent,
-    ListItemComponent,
     ErrorAlertComponent
   },
   name: "UsersView",
@@ -43,7 +39,7 @@ export default {
       data: [],
       showError: false,
       errorMessage: '',
-      currentUsername: '',
+      currentUser: '',
       selectedUsername: '',
       messages:[]
     }
@@ -51,7 +47,7 @@ export default {
 
   created(){
     this.token = localStorage.getItem("JWTToken")
-    this.currentUsername = jwtDecode(this.token).Username
+    this.currentUser = jwtDecode(this.token).Username
     this.loadUsers()
   },
 
@@ -67,7 +63,7 @@ export default {
     },
 
     onSelect(username){
-      console.log(`selected ${username}`)
+      console.log(`log from users ${username}`)
       this.selectedUsername = username
       this.loadMessages()
     },

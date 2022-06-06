@@ -57,22 +57,21 @@ export default {
       }
     },*/
 
-    register(e) {
+      register(e) {
+        //this.validate()
+        e.preventDefault()
+        //console.log(this.username, this.password)
+        register(this.username, this.password, localStorage, this)
+      },
 
-      //this.validate()
-      e.preventDefault()
-      //console.log(this.username, this.password)
-      register(this.username, this.password, localStorage, this)
-    },
+      closeError(){
+        this.showError=false
+        this.errorMessage = ''
+      },
 
-    closeError(){
-      this.showError=false
-      this.errorMessage = ''
-    },
-
-    displayError(){
-      this.showError=true
-    }
+      displayError(){
+        this.showError=true
+      }
 
     }
 }

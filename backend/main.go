@@ -3,16 +3,21 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Gwestone/dchat/Color"
 	"github.com/Gwestone/dchat/DB"
 	"github.com/Gwestone/dchat/auth"
+	"github.com/Gwestone/dchat/color"
 	"github.com/Gwestone/dchat/config"
 	"github.com/Gwestone/dchat/routes"
 	"github.com/Gwestone/dchat/session"
 	"github.com/Gwestone/dchat/utils"
 	"github.com/gin-gonic/gin"
+	"io"
+	"log"
 	"os"
+	"path"
+	"path/filepath"
 	"strconv"
+	"time"
 )
 
 //DONE: add air livereload support
@@ -50,6 +55,30 @@ func main() {
 		return
 	}
 
+	//error logging to file
+	if appConf.UseFileLog {
+		abs, err := filepath.Abs("./Log")
+		if err != nil {
+			err.Error()
+		}
+
+		if _, err := os.Stat(abs); !os.IsNotExist(err) {
+
+			now := time.Now()
+			milisec := strconv.Itoa(now.Nanosecond() / 1000000)
+			filename := now.Format("2006-Jan-Mon-15-04-05") + "-" + milisec + ".log"
+			filenameAbs := path.Join(abs, filename)
+			f, err := os.OpenFile(filenameAbs, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				log.Fatal(err)
+			}
+			gin.DefaultErrorWriter = io.MultiWriter(f)
+
+		} else {
+			fmt.Println("cant find path to log folder " + abs)
+		}
+	}
+
 	db, err := DB.ConnectDB(appConf.DbAddr)
 	//DB.MigrateUsers(db)
 	if err != nil {
@@ -66,14 +95,14 @@ func main() {
 		cache := session.NewCacheContext(rdb, ctx)
 		env.SessionCtx = cache
 		if rdb.Ping(ctx).Val() == "PONG" {
-			fmt.Println("Redis is", Color.Green, "online", Color.Reset)
+			fmt.Println("Redis is", color.Green, "online", color.Reset)
 		} else {
 			fmt.Println("Failed to setup redis on addr :", appConf.RedisAddr)
 			return
 		}
-		fmt.Println("Redis is", Color.Green, "online", Color.Reset)
+		fmt.Println("Redis is", color.Green, "online", color.Reset)
 	} else {
-		fmt.Println("Redis is", Color.Red, "offline", Color.Reset, "this can cause instability in work or decreased performance")
+		fmt.Println("Redis is", color.Red, "offline", color.Reset, "this can cause instability in work or decreased performance")
 	}
 
 	env.Db = db

@@ -4,8 +4,10 @@
     width: 90%;
     margin-left: 20px;
     font-size:22px;
+    margin-top: 10px;
 }
 .send__button{
+    margin-top: 10px;
     float: left;
     padding: 5px;
 }

@@ -10,3 +10,5 @@ RedisPassword: 1234
 JWTSecret: WgyCXpzAOJkkQUWjztqiwBWOYstBDJSfKmzQiQkEqpPePKTmyhosQlAqVZAaaoDsSSlVBUNB
 #https
 UseSSL: false
+#fileLog
+UseFileLog: true

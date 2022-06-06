@@ -13,7 +13,7 @@ export default {
       required: true,
       default() {
         return {
-          username: "default",
+          Username: "default",
           id: -1
         }
       }

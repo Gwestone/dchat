@@ -9,5 +9,15 @@
     background: #f3ffff;
 }
 .date{
-    color: #888888;
+    color: #ababab;
+}
+.from{
+    color: #ababab;
+    display: inline;
+}
+
+.text{
+    color: #111111;
+    word-wrap: break-word;
+    max-width: 70ch;
 }
