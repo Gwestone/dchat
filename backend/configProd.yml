@@ -1,5 +1,5 @@
 #postgres
-DbAddr: postgres://postgres:1234@postgres:5432/dchat?sslmode=disable
+DbAddr: postgres://postgres:55aa@postgres:5432/dchat?sslmode=disable
 #server
 Port: 8080
 #redis

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default function login(username, password, localStorage, vueInst) {
-    axios.post("http://localhost:8080/auth/login",
+    axios.post(vueInst.$serverAddr + "/auth/login",
         {
             Username: username,
             Password: password

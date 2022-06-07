@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default function fetchUsers(token, vueInst){
-    axios.post("http://localhost:8080/messages/all",
+    axios.post(vueInst.$serverAddr + "/messages/all",
         {},
         {
             headers: {
