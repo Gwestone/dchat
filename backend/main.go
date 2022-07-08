@@ -20,18 +20,6 @@ import (
 	"time"
 )
 
-//DONE: add air livereload support
-//DONE: add conf system
-//DONE: upgrade db
-//DONE: add password encryption
-//DONE: security update (tls)
-//TODO: db migration
-//TODO: tests
-//TODO: comment and document code
-//TODO: JWT validation
-//optional
-//TODO: upgrade websocket user message gateway
-//DONE: add docker support
 func main() {
 
 	inFlags := os.Args[1:]
@@ -40,6 +28,7 @@ func main() {
 	var appConf *config.Config
 	var err error
 
+	//debug setup
 	if utils.IfHasFlag(inFlags, "--Prod") || utils.IfHasFlag(inFlags, "--Production") {
 		appConf, err = config.Parse("./configProd.yml")
 		gin.SetMode(gin.ReleaseMode)
@@ -55,7 +44,7 @@ func main() {
 		return
 	}
 
-	//error logging to file
+	//error logging setup
 	if appConf.UseFileLog {
 		abs, err := filepath.Abs("./Log")
 		if err != nil {
@@ -79,6 +68,7 @@ func main() {
 		}
 	}
 
+	//db setup
 	db, err := DB.ConnectDB(appConf.DbAddr)
 	//DB.MigrateUsers(db)
 	if err != nil {
@@ -88,6 +78,7 @@ func main() {
 
 	env := utils.NewEnv()
 
+	//setup redis
 	if appConf.UseRedis {
 		fmt.Println("Trying to launch redis service...")
 		rdb := session.Connect(appConf.RedisAddr, appConf.RedisPassword)
@@ -108,10 +99,12 @@ func main() {
 	env.Db = db
 	env.Config = appConf
 
+	//middleware setup
 	//DB.MigrateUsers(db)
 	router.Use(env.SetEnv)
 	router.Use(utils.SetCORS())
 
+	//router setup
 	authRoute := router.Group("/auth")
 	{
 		authRoute.POST("/login", auth.Login)

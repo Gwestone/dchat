@@ -6,4 +6,5 @@ To run dchat you will need to install [Docker](https://www.docker.com/) (and [WS
 * first you need to download github repository using:
 `git clone https://github.com/Gwestone/dchat`
 * after you need to launch batch `restart-compose.bat` or shell `restart-compose.sh` scripts to automatically run docker compose or run in console commands `docker-compose build --pull` to build docker image and `docker-compose up` to lauch image
+* you also need to load last dump of postgress db, for that you need to launch `load_last.sh` script in SQL folder it will autotically load last.SQL dump to postgress db in docker container 
 * after that you should go to address `localhost:80` and check the app

@@ -26,7 +26,7 @@
     </li>
 
   </ul>
-  <router-view class="routerView" v-on:login="updateToken" v-on:register="updateToken"/>
+  <router-view class="routerView" v-on:login="updateToken"/>
 </template>
 
 <script>
